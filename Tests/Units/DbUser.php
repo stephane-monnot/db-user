@@ -117,7 +117,7 @@ class DbUser extends atoum
         $connection = $this->getConnection();
 
         $this
-            ->if($this->newTestedInstabuild-toolsnce($connection))
+            ->if($this->newTestedInstance($connection))
             ->string(
                 $this->testedInstance->changePrivilegesQuery(
                     testedClass::PRIVILEGE_STATEMENT_GRANT,
@@ -131,6 +131,16 @@ class DbUser extends atoum
                     'test_table'
             ))
                 ->isEqualTo('GRANT CREATE, UPDATE, DELETE ON test_database.test_table TO "test_username"@localhost;')
+
+            ->string(
+                $this->testedInstance->changePrivilegesQuery(
+                    testedClass::PRIVILEGE_STATEMENT_GRANT,
+                    'test_username',
+                    testedClass::PRIVILEGE_CREATE,
+                    'test_database',
+                    'test_table'
+                ))
+                ->isEqualTo('GRANT CREATE ON test_database.test_table TO "test_username"@localhost;')
         ;
     }
 }
