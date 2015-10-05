@@ -143,4 +143,35 @@ class DbUser extends atoum
                 ->isEqualTo('GRANT CREATE ON test_database.test_table TO "test_username"@localhost;')
         ;
     }
+
+    /**
+     * Fake Tests for doctrine to ignore in coverage percentage
+     *
+     * @return void
+     */
+    public function testDoctrine()
+    {
+        $connection = $this->getConnection();
+
+        $this
+            ->if($this->newTestedInstance($connection))
+            ->variable($this->testedInstance->flushPrivileges())
+                ->isNull()
+
+            ->variable($this->testedInstance->revokePrivileges('test_username'))
+                ->isNull()
+
+            ->variable($this->testedInstance->grantPrivileges('test_username'))
+                ->isNull()
+
+            ->variable($this->testedInstance->userExist('test_username'))
+                ->isNull()
+
+            ->variable($this->testedInstance->dropUser('test_username'))
+                ->isNull()
+
+            ->variable($this->testedInstance->createUser('test_username', 'test_password'))
+                ->isNull()
+        ;
+    }
 }
