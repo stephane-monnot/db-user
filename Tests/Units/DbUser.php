@@ -156,22 +156,22 @@ class DbUser extends atoum
         $this
             ->if($this->newTestedInstance($connection))
             ->variable($this->testedInstance->flushPrivileges())
-                ->isNull()
+                ->isEqualTo(true)
 
             ->variable($this->testedInstance->revokePrivileges('test_username'))
-                ->isNull()
+                ->isEqualTo(true)
 
             ->variable($this->testedInstance->grantPrivileges('test_username'))
-                ->isNull()
+                ->isEqualTo(true)
 
             ->variable($this->testedInstance->userExist('test_username'))
                 ->isNull()
 
             ->variable($this->testedInstance->dropUser('test_username'))
-                ->isNull()
+                ->isEqualTo(true)
 
             ->variable($this->testedInstance->createUser('test_username', 'test_password'))
-                ->isNull()
+                ->isEqualTo(true)
         ;
     }
 }

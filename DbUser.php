@@ -199,7 +199,7 @@ class DbUser
      */
     public function createUser($username, $password)
     {
-        return $this->connection->exec($this->createUserQuery($username, $password));
+        return $this->connection->exec($this->createUserQuery($username, $password)) !== false;
     }
 
     /**
@@ -224,7 +224,7 @@ class DbUser
      */
     public function dropUser($username)
     {
-        return $this->connection->exec($this->dropUserQuery($username));
+        return $this->connection->exec($this->dropUserQuery($username)) !== false;
     }
 
     /**
@@ -284,7 +284,7 @@ class DbUser
             $table
         );
 
-        return $this->connection->exec($sqlQuery);
+        return $this->connection->exec($sqlQuery) !== false;
     }
 
     /**
@@ -308,7 +308,7 @@ class DbUser
             $table
         );
 
-        return $this->connection->exec($sqlQuery);
+        return $this->connection->exec($sqlQuery) !== false;
     }
 
     /**
@@ -318,7 +318,7 @@ class DbUser
      */
     public function flushPrivileges()
     {
-        return $this->connection->exec($this->flushPrivilegesQuery());
+        return $this->connection->exec($this->flushPrivilegesQuery()) !== false;
     }
 
     /**
