@@ -181,9 +181,9 @@ class DbUser
     /**
      * Constructor
      *
-     * @param DoctrineConnection $connection The connection
+     * @param DoctrineConnection|\PDO $connection The connection
      */
-    public function __construct(DoctrineConnection $connection)
+    public function __construct($connection)
     {
         $this->connection = $connection;
     }
