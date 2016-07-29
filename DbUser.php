@@ -175,7 +175,7 @@ class DbUser
     /**
      * The connection.
      *
-     * @var DoctrineConnection
+     * @var DoctrineConnection|\PDO
      */
     protected $connection;
 
