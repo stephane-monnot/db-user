@@ -1,10 +1,11 @@
 <?php
+
 namespace Shinbuntu\DbUser;
 
 use Doctrine\DBAL\Connection as DoctrineConnection;
 
 /**
- * Create sql users
+ * Create sql users.
  *
  * @author  Stéphane Monnot <smonnot@solire.fr>
  * @license MIT http://mit-license.org/
@@ -172,14 +173,14 @@ class DbUser
     const PRIVILEGE_STATEMENT_REVOKE = 'REVOKE';
 
     /**
-     * The connection
+     * The connection.
      *
      * @var DoctrineConnection
      */
     protected $connection;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param DoctrineConnection|\PDO $connection The connection
      */
@@ -189,13 +190,14 @@ class DbUser
     }
 
     /**
-     * Create MYSQL user
+     * Create MYSQL user.
      *
      * @param string $username Mysql username
      * @param string $password Mysql password
      *
-     * @return boolean TRUE on success or FALSE on failure.
      * @throws \Doctrine\DBAL\DBALException
+     *
+     * @return bool TRUE on success or FALSE on failure.
      */
     public function createUser($username, $password)
     {
@@ -203,7 +205,7 @@ class DbUser
     }
 
     /**
-     * Build query to create MYSQL user
+     * Build query to create MYSQL user.
      *
      * @param string $username Mysql username
      * @param string $password Mysql password
@@ -212,15 +214,15 @@ class DbUser
      */
     public function createUserQuery($username, $password)
     {
-        return 'CREATE USER ' . $username . '@localhost IDENTIFIED BY ' . $this->connection->quote($password) . ';';
+        return 'CREATE USER '.$username.'@localhost IDENTIFIED BY '.$this->connection->quote($password).';';
     }
 
     /**
-     * Delete MYSQL user
+     * Delete MYSQL user.
      *
      * @param string $username Mysql username
      *
-     * @return boolean TRUE if exist or FALSE if not.
+     * @return bool TRUE if exist or FALSE if not.
      */
     public function dropUser($username)
     {
@@ -228,7 +230,7 @@ class DbUser
     }
 
     /**
-     * Build query to drop MYSQL user
+     * Build query to drop MYSQL user.
      *
      * @param string $username Mysql username
      *
@@ -236,15 +238,15 @@ class DbUser
      */
     public function dropUserQuery($username)
     {
-        return 'DROP USER ' . $username . '@localhost;';
+        return 'DROP USER '.$username.'@localhost;';
     }
 
     /**
-     * Test if MYSQL user exist
+     * Test if MYSQL user exist.
      *
      * @param string $username Mysql username
      *
-     * @return boolean TRUE if exist or FALSE if not.
+     * @return bool TRUE if exist or FALSE if not.
      */
     public function userExist($username)
     {
@@ -252,7 +254,7 @@ class DbUser
     }
 
     /**
-     * Build query to test if MYSQL user exist
+     * Build query to test if MYSQL user exist.
      *
      * @param string $username Mysql username
      *
@@ -260,19 +262,20 @@ class DbUser
      */
     public function userExistQuery($username)
     {
-        return 'SELECT EXISTS(SELECT 1 FROM mysql.user WHERE user = ' . $this->connection->quote($username) . ');';
+        return 'SELECT EXISTS(SELECT 1 FROM mysql.user WHERE user = '.$this->connection->quote($username).');';
     }
 
     /**
-     * Grant privileges to mysql user
+     * Grant privileges to mysql user.
      *
      * @param string       $username   Mysql username
      * @param array|string $privileges Mysql privileges
      * @param string       $database   Mysql database name
      * @param string       $table      Mysql $table name
      *
-     * @return boolean TRUE on success or FALSE on failure.
      * @throws \Doctrine\DBAL\DBALException
+     *
+     * @return bool TRUE on success or FALSE on failure.
      */
     public function grantPrivileges($username, $privileges = self::PRIVILEGE_USAGE, $database = '*', $table = '*')
     {
@@ -288,15 +291,16 @@ class DbUser
     }
 
     /**
-     * Revoke privileges to mysql user
+     * Revoke privileges to mysql user.
      *
      * @param string       $username   Mysql username
      * @param array|string $privileges Mysql privileges
      * @param string       $database   Mysql database name
      * @param string       $table      Mysql $table name
      *
-     * @return boolean TRUE on success or FALSE on failure.
      * @throws \Doctrine\DBAL\DBALException
+     *
+     * @return bool TRUE on success or FALSE on failure.
      */
     public function revokePrivileges($username, $privileges = self::PRIVILEGE_USAGE, $database = '*', $table = '*')
     {
@@ -312,9 +316,9 @@ class DbUser
     }
 
     /**
-     * Flush privileges
+     * Flush privileges.
      *
-     * @return boolean TRUE on success or FALSE on failure.
+     * @return bool TRUE on success or FALSE on failure.
      */
     public function flushPrivileges()
     {
@@ -322,7 +326,7 @@ class DbUser
     }
 
     /**
-     * Build query to flush privileges
+     * Build query to flush privileges.
      *
      * @return string SQL Query string
      */
@@ -332,7 +336,7 @@ class DbUser
     }
 
     /**
-     * Build query to Grant or Revoke privileges to mysql user
+     * Build query to Grant or Revoke privileges to mysql user.
      *
      * @param string       $privilegeStatement REVOKE or GRANT
      * @param string       $username           Mysql username
@@ -355,8 +359,8 @@ class DbUser
 
         $usernameQuoted = $this->connection->quote($username);
 
-        $sqlQuery = $privilegeStatement . ' ' . implode(', ', $privileges)
-            . ' ON ' . $database . '.' . $table . ' TO ' . $usernameQuoted . '@localhost;';
+        $sqlQuery = $privilegeStatement.' '.implode(', ', $privileges)
+            .' ON '.$database.'.'.$table.' TO '.$usernameQuoted.'@localhost;';
 
         return $sqlQuery;
     }
