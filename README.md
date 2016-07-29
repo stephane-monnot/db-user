@@ -2,6 +2,8 @@
 
 Create Mysql users and manage privileges easily.
 
+[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/PHP-DI/PHP-DI.svg?style=flat-square)](https://scrutinizer-ci.com/g/SHINBUNTU/DB-USER/?branch=master)
+
 ## Why?
 
 This project makes easier the MySQL User Account Management in PHP and it avoids the use of raw SQL queries.
