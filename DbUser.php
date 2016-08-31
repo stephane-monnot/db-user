@@ -250,7 +250,7 @@ class DbUser
      */
     public function userExist($username)
     {
-        return $this->connection->fetchColumn($this->userExistQuery($username));
+        return $this->connection->query($this->userExistQuery($username))->fetchColumn();
     }
 
     /**

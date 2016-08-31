@@ -8,6 +8,7 @@
 namespace Shinbuntu\DbUser\Tests\Units;
 
 use atoum;
+use mock\Doctrine\DBAL\Driver\PDOStatement;
 use mock\Doctrine\DBAL\Connection;
 use Shinbuntu\DbUser\DbUser as testedClass;
 
@@ -37,6 +38,9 @@ class DbUser extends atoum
         };
         $this->connection->getMockController()->quote = function ($input) {
             return '"'.addslashes($input).'"';
+        };
+        $this->connection->getMockController()->query = function () {
+            return new PDOStatement();
         };
 
         $this->mockGenerator->unshuntParentClassCalls();
