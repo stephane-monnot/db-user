@@ -194,14 +194,15 @@ class DbUser
      *
      * @param string $username Mysql username
      * @param string $password Mysql password
+     * @param string $host     Mysql host
      *
      * @throws \Doctrine\DBAL\DBALException
      *
      * @return bool TRUE on success or FALSE on failure.
      */
-    public function createUser($username, $password)
+    public function createUser($username, $password, $host = 'localhost')
     {
-        return $this->connection->exec($this->createUserQuery($username, $password)) !== false;
+        return $this->connection->exec($this->createUserQuery($username, $password, $host)) !== false;
     }
 
     /**
@@ -222,12 +223,13 @@ class DbUser
      * Delete MYSQL user.
      *
      * @param string $username Mysql username
+     * @param string $host Mysql host
      *
      * @return bool TRUE if exist or FALSE if not.
      */
-    public function dropUser($username)
+    public function dropUser($username, $host = 'localhost')
     {
-        return $this->connection->exec($this->dropUserQuery($username)) !== false;
+        return $this->connection->exec($this->dropUserQuery($username, $host)) !== false;
     }
 
     /**
