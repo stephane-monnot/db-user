@@ -209,12 +209,13 @@ class DbUser
      *
      * @param string $username Mysql username
      * @param string $password Mysql password
+     * @param string $host     Mysql host
      *
      * @return string SQL Query string
      */
-    public function createUserQuery($username, $password)
+    public function createUserQuery($username, $password, $host = 'localhost')
     {
-        return 'CREATE USER '.$username.'@localhost IDENTIFIED BY '.$this->connection->quote($password).';';
+        return 'CREATE USER '.$username.'@'.$host.' IDENTIFIED BY '.$this->connection->quote($password).';';
     }
 
     /**
@@ -233,12 +234,13 @@ class DbUser
      * Build query to drop MYSQL user.
      *
      * @param string $username Mysql username
+     * @param string $host Mysql host
      *
      * @return string SQL Query string
      */
-    public function dropUserQuery($username)
+    public function dropUserQuery($username, $host = 'localhost')
     {
-        return 'DROP USER '.$username.'@localhost;';
+        return 'DROP USER '.$username.'@'.$host.';';
     }
 
     /**
@@ -272,19 +274,26 @@ class DbUser
      * @param array|string $privileges Mysql privileges
      * @param string       $database   Mysql database name
      * @param string       $table      Mysql $table name
+     * @param string       $host       Mysql host
      *
      * @throws \Doctrine\DBAL\DBALException
      *
      * @return bool TRUE on success or FALSE on failure.
      */
-    public function grantPrivileges($username, $privileges = self::PRIVILEGE_USAGE, $database = '*', $table = '*')
-    {
+    public function grantPrivileges(
+        $username,
+        $privileges = self::PRIVILEGE_USAGE,
+        $database = '*',
+        $table = '*',
+        $host = 'localhost'
+    ) {
         $sqlQuery = $this->changePrivilegesQuery(
             self::PRIVILEGE_STATEMENT_GRANT,
             $username,
             $privileges,
             $database,
-            $table
+            $table,
+            $host
         );
 
         return $this->connection->exec($sqlQuery) !== false;
@@ -297,19 +306,26 @@ class DbUser
      * @param array|string $privileges Mysql privileges
      * @param string       $database   Mysql database name
      * @param string       $table      Mysql $table name
+     * @param string       $host       Mysql host
      *
      * @throws \Doctrine\DBAL\DBALException
      *
      * @return bool TRUE on success or FALSE on failure.
      */
-    public function revokePrivileges($username, $privileges = self::PRIVILEGE_USAGE, $database = '*', $table = '*')
-    {
+    public function revokePrivileges(
+        $username,
+        $privileges = self::PRIVILEGE_USAGE,
+        $database = '*',
+        $table = '*',
+        $host = 'localhost'
+    ) {
         $sqlQuery = $this->changePrivilegesQuery(
             self::PRIVILEGE_STATEMENT_REVOKE,
             $username,
             $privileges,
             $database,
-            $table
+            $table,
+            $host
         );
 
         return $this->connection->exec($sqlQuery) !== false;
@@ -343,6 +359,7 @@ class DbUser
      * @param array|string $privileges         Mysql privileges
      * @param string       $database           Mysql database name
      * @param string       $table              Mysql $table name
+     * @param string       $host               Mysql host
      *
      * @return string SQL Query string
      */
@@ -351,7 +368,8 @@ class DbUser
         $username,
         $privileges = self::PRIVILEGE_USAGE,
         $database = '*',
-        $table = '*'
+        $table = '*',
+        $host = 'localhost'
     ) {
         if (is_string($privileges)) {
             $privileges = [$privileges];
@@ -360,7 +378,7 @@ class DbUser
         $usernameQuoted = $this->connection->quote($username);
 
         $sqlQuery = $privilegeStatement.' '.implode(', ', $privileges)
-            .' ON '.$database.'.'.$table.' TO '.$usernameQuoted.'@localhost;';
+            .' ON '.$database.'.'.$table.' TO '.$usernameQuoted.'@'.$host.';';
 
         return $sqlQuery;
     }

@@ -74,7 +74,7 @@ class DbUser extends atoum
 
         $this
             ->if($this->newTestedInstance($connection))
-            ->string($this->testedInstance->dropUserQuery('test_username', '!super_secure_password$'))
+            ->string($this->testedInstance->dropUserQuery('test_username'))
                 ->isEqualTo('DROP USER test_username@localhost;');
     }
 
